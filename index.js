@@ -1,6 +1,9 @@
-const divs = document.getElementsByTagName("div");
-for(let el of divs){
-    el.addEventListener("click", function(){
-        alert("ELEMEN "+el.getAttribute("id").toUpperCase());
-    }, true)
-}
+const submitForm = document.getElementById('formDataDiri');
+submitForm.addEventListener('submit', function(e){
+  const nama = document.getElementById('nama').value;
+  const domisili = document.getElementById('domisili').value;
+  const message = `Halo ${nama} bagaimana cuacanya di ${domisili}`
+
+  document.getElementById('messageAfterSubmit').innerText = message
+  e.preventDefault();
+})
