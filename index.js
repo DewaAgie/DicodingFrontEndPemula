@@ -23,6 +23,11 @@ document.getElementById("inputNamaPanggilan").addEventListener("focus", function
   document.getElementById("notifikasiSisaKarakter").style.visibility = null;
 });
 
+
+document.getElementById("inputNamaPanggilan").addEventListener("blur", function(){
+  document.getElementById("notifikasiSisaKarakter").style.visibility = "hidden";
+});
+
 document.getElementById("inputCaptcha").addEventListener("change", function(){
   const inputCaptcha = document.getElementById("inputCaptcha").value;
   const submitButtonStatus = document.getElementById("submitButton");
@@ -36,8 +41,16 @@ document.getElementById("formDataDiri").addEventListener("submit", function(){
   if (inputCaptcha == "PRNU"){
       event.preventDefault();
       alert("Selamat! Captcha Anda lolos :D");
-  } else{
+  }else{
       alert("Captcha Anda belum tepat :(")
       submitButtonStatus.addAttribute("disabled", true);
   }
+});
+
+document.getElementById("inputCopy").addEventListener("copy", function(){
+  alert("Anda telah men-copy sesuatu...");
+});
+
+document.getElementById("inputPaste").addEventListener("paste", function(){
+  alert("Anda telah mem-paste sebuah teks...");
 });
