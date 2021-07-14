@@ -6,8 +6,14 @@ document.addEventListener("DOMContentLoaded", function(){
     addTodo();
   })
 
-  const button = document.querySelector('.button');
-  button.addEventListener('click', (e) => {
-    // do something
-  })
+  if(isStorageExist()){
+    loadDataFromStorage();
+  }
 })
+
+document.addEventListener("ondatasaved", () => {
+  console.log("Data berhasil disimpan.");
+});
+document.addEventListener("ondataloaded", () => {
+  refreshDataFromTodos();
+});
