@@ -1,153 +1,98 @@
 <!DOCTYPE html>
 <html>
-
-<head>
-  <title>Web Storage Game</title>
-  <style>
-    hr {
-      size: 2;
-      height: 2px;
-      color: black;
-      background-color: black;
-      width: 95%;
-    }
-
-    li {
-      margin-top: 1%;
-      margin-bottom: 1%;
-      font-size: 120%;
-    }
-
-    .contents {
-      margin-left: 5%;
-      margin-right: 5%;
-    }
-
-    .child-content {
-      border: 1px solid black;
-      border-width: 2px;
-      padding-bottom: 2%;
-      margin-bottom: 1%;
-    }
-
-    .button {
-      padding-left: 1%;
-      padding-right: 1%;
-      font-size: 140%
-    }
-
-    .answer-button {
-      margin-left: 2%;
-      margin-right: 2%;
-      padding: 2%;
-      font-size: 140%;
-      width: 12%;
-      ;
-    }
-
-    #total-stats {
-      float: right;
-      width: 40%;
-      height: 50%;
-    }
-
-    #gameboard {
-      float: left;
-      width: 55%;
-      height: 40%;
-    }
-
-    #session-stats {
-      float: left;
-      margin-top: 1%;
-      width: 55%;
-    }
-
-    #instructions {
-      float: right;
-      margin-top: 1%;
-      width: 40%;
-    }
-
-    #instructions-list {
-      margin-left: 1%;
-      margin-right: 1%;
-    }
-  </style>
-</head>
-
-<body align="center">
-  <h1>Permainan Tebak Angka '123'</h1>
-  <div class="contents">
-    <div class="child-content" id="total-stats">
-      <h2>Local Stats</h2>
-      <hr>
-      <div id="all-local-stats">
-        <div class="local-stat-item">
-          <h3>Jumlah permainan yang berhasil dimenangkan:</h3>
-          <h3 id="local-total-victory-field"></h3>
+    <head>
+        <title>Web Storage JSON</title>
+        <style>
+ 
+            hr{
+                size: 2;
+                height:2px;
+                color:black;
+                background-color:black;
+                width: 95%;
+            }
+ 
+            table{
+                border-collapse: collapse;
+                border-spacing: 0;
+                width: 100%;
+                border: 1px solid #ddd;
+            }
+ 
+            .contents{
+                margin-left: 5%;
+                margin-right: 5%;
+            }
+ 
+            .child-content{
+                border: 1px solid black;
+                border-width:2px;
+                padding-bottom: 2%;
+                margin-bottom: 1%;
+            }
+ 
+            .form-element{
+                margin:2%;
+            }
+ 
+            #user-form{
+                width: 50%;
+                height: 40%;
+            }
+ 
+            #user-list{
+                margin-top: 1%;
+                width: 55%;
+            }
+ 
+            #instructions-list{
+                margin-left: 1%;
+                margin-right: 1%;
+            }
+        </style>
+    </head>
+    <body>
+        <h1 align="center">Penambahan User Baru</h1>
+        <div class="contents"  align="center">
+ 
+            <div class="child-content" id="user-form">
+                <h2>Form User Data</h2>
+                <hr>
+                <form id="form-data-user">
+                    <div class="form-element">
+                        <label for="nama">Nama user:</label><br>
+                        <input id="nama" type="text" name="nama" placeholder="Nama user" value="" maxlength="10" required ><br>
+                    </div>
+                    <div class="form-element">
+                        <label for="Umur">Umur user:</label><br>
+                        <input id="umur" type="text" name="Umur" placeholder="Umur user" value="" maxlength="2" required><br>
+                    </div>
+                    <div class="form-element">
+                        <label for="Domisili">Domisili user:</label><br>
+                        <input id="domisili" type="text" name="Domisili" placeholder="Domisili user" value="" maxlength="10" required><br>
+                    </div>
+                    <div class="form-element">
+                        <input id="submitButton" type="submit" value="Submit Data">
+                    </div>
+                </form>
+            </div>
+ 
+            <div class="child-content" id="user-list">
+                <h2>User List</h2>
+                <hr>
+                <table id=user-list-table>
+                    <thead>
+                        <tr>
+                            <th>Nama</th>
+                            <th>Umur</th>
+                            <th>Domisili</th>
+                        </tr>
+                    </thead>
+                    <tbody id="user-list-detail" align="center"></tbody>
+                </table>
+            </div>
         </div>
-        <div class="local-stat-item">
-          <h3>Jumlah tebakan salah terbanyak sekali main:</h3>
-          <h3 id="local-maximum-attemp-field"></h3>
-        </div>
-        <button class="button" id="destroy-data-button">Hapus semua data</button>
-      </div>
-    </div>
-
-    <div class="child-content" id="gameboard">
-      <h2>Game Board</h2>
-      <hr>
-      <div id="before-game-display">
-        <h3>Tekan tombol "Play" di bawah jika sudah siap</h3>
-        <button class="button" id="play-button">Bermain</button>
-      </div>
-      <div id="during-game-display" hidden>
-        <h3>Silahkan menebak angka!</h3>
-        <h3>Jawaban Anda:</h3>
-        <h1>"<u><span id="session-user-answer-field"></span></u>"</h1>
-        <button class="answer-button" id="answer-1-button">1</button>
-        <button class="answer-button" id="answer-2-button">2</button>
-        <button class="answer-button" id="answer-3-button">3</button>
-        <h3>"<span id="session-user-wrong-answer-field"></span>" bukanlah jawabannya...</h3><br><br>
-      </div>
-      <div id="after-game-display" hidden>
-        <h3>Selamat Tebakan Anda benar!</h3>
-        <h3>Jawabannya adalah: </h3>
-        <h1>"<span id="session-true-answer-field"></span>"</h1>
-        <h3><i></i>Refresh alaman ini untuk mencoba lagi</h3>
-      </div>
-    </div>
-
-    <div class="child-content" id="session-stats">
-      <h2>Game Session Stats</h2>
-      <hr>
-      <div id="all-session-stats">
-        <div class="session-stat-item">
-          <h3>Jumlah Tebakan Salah:</h3>
-          <h3 id="session-user-attemps-amount-field"></h3>
-        </div>
-      </div>
-    </div>
-
-    <div class="child-content" id="instructions">
-      <h2>Cara bermain</h2>
-      <hr>
-      <h3>Selamat datang ke permainan tebak angka, berikut instruksi-nya:</h3>
-      <ul id="instructions-list" align="left">
-        <li>Anda harus mencari kombinasi angka yang terdiri dari angka "1", "2", dan "3",
-          misalnya "231" dan "123".</li>
-        <li>Angka yang ditebak hanya memiliki panjang 3 karakter saja,
-          sehingga kombinasi seperti "1231" tidak akan menjadi jawaban.</li>
-        <li>Sebuah angka hanya akan muncul sekali dan hanya sekali,
-          sehingga kombinasi seperti "223" maupun "111" tidak akan menjadi jawaban.</li>
-        <li><i>Have fun and don't cheat!</i></li>
-      </ul>
-    </div>
-  </div>
-  <script src="index.js">
-    
-  </script>
-</body>
-
+        <script src="index.js">
+        </script>
+    </body>
 </html>
